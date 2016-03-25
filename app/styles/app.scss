@@ -17,6 +17,10 @@ img {
 }
 .container-fluid{
   padding: 0;
+  margin-bottom: 30px;
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
 }
 .bod{
   background: url("../images/background.jpg") no-repeat;
@@ -115,6 +119,7 @@ img {
   color: white;
   text-align: center;
   form{
+    margin-left: -29px;
     margin-top: 18px;
     width: 25%;
     display: inline-block;
@@ -150,4 +155,59 @@ img {
       display: inline-block;
     }
   }
+}
+
+$lines-to-show: 3;
+.thumbnail{
+  cursor: pointer;
+  -webkit-box-shadow: -1px 2px 5px 1px rgba(0,0,0,0.75);
+  -moz-box-shadow: -1px 2px 5px 1px rgba(0,0,0,0.75);
+  box-shadow: -1px 2px 5px 1px rgba(0,0,0,0.75);
+  // padding: 0;
+  img{
+    width: 100%;
+  }
+  h3{
+    font-family: American Typewriter;
+    margin-bottom: 1px;
+
+    &:hover{
+      text-decoration: underline;
+
+    }
+  }
+  h4{
+    margin-top: 0;
+    margin-bottom:  6px;
+    font-family: American Typewriter;
+    color:  rgba(109, 26, 7, 1);
+  }
+  p{
+   font-family: Courier New;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   font-size: 16px;
+  }
+  button{
+    font-family: American Typewriter;
+    margin-left: 113px;
+    color: white;
+    background-color: rgba(109, 26, 7, 1);
+    border: 1px solid rgba(109, 26, 7, 1);
+    &:hover{
+      background-color: rgba(109, 26, 7, 0);
+      color: rgba(109, 26, 7, 1);
+    }
+  }
+  &:hover{
+    -webkit-box-shadow: -1px 4px 10px 3px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 4px 10px 3px rgba(0,0,0,0.75);
+    box-shadow: -1px 4px 10px 3px rgba(0,0,0,0.75);
+  }
+}
+
+
+
+.recipe{
+  text-align: center;
 }
