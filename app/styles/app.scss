@@ -1,0 +1,153 @@
+
+// Bootstrap Variables
+$icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
+
+// Import Bootstrap
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+.container-fluid{
+  padding: 0;
+}
+.bod{
+  background: url("../images/background.jpg") no-repeat;
+  background-size: cover;
+  &::before{
+    position: absolute;
+    content: "";
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right:0;
+    background-color: rgba(140, 140, 140, 0.4);
+  }
+}
+
+
+.header{
+  position: relative;
+  text-align: left;
+  h1{
+    color: whitesmoke;
+    font-family: American Typewriter;
+    font-size: 82px;
+    font-weight: 200;
+    margin: 36px 0px 0 10px;
+    text-transform: capitalize;
+    text-decoration: overline;
+  }
+}
+
+
+
+
+.signup{
+  color: black;
+  text-align: center;
+  width: 600px;
+  margin: 100px auto;
+  font-family:  American Typewriter;
+  position: relative;
+  .well{
+  background-color: rgba(250, 250, 250, 0.8);
+  h2{
+  letter-spacing: 1px;
+  margin-top: 0;
+  }
+  input{
+    margin: 8px 0 8px 0;
+  }
+  p{
+    margin: 0;
+  }
+  button{
+    display: block;
+    width: 100%;
+    margin: 8px 0 8px 0;
+    background-color: rgba(109, 26, 7, 1);
+    border: 1px solid rgba(109, 26, 7, 1);
+
+  }
+
+  }
+}
+
+
+.login{
+  color: black;
+  text-align: center;
+  width: 600px;
+  margin: 100px auto;
+  font-family:  American Typewriter;
+  position: relative;
+  .well{
+  background-color: rgba(250, 250, 250, 0.8);
+  h2{
+  letter-spacing: 1px;
+  margin-top: 0;
+  }
+  input{
+    margin: 8px 0 8px 0;
+  }
+  button{
+    display: block;
+    width: 100%;
+    margin: 8px 0 8px 0;
+    background-color: rgba(109, 26, 7, 1);
+    border: 1px solid rgba(109, 26, 7, 1);
+  }
+  }
+}
+
+
+.app-header{
+  background-color: rgba(109, 26, 7, 1);
+  font-family:   American Typewriter;
+  color: white;
+  text-align: center;
+  form{
+    margin-top: 18px;
+    width: 25%;
+    display: inline-block;
+    input{
+      width: 100%;
+    }
+  }
+  h1{
+    font-size: 35px;
+    float: left;
+    margin: 15px 0 15px 20px;
+    display: inline-block;
+  }
+  a{
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    float: right;
+    font-size: 20px;
+    margin: 22px 25px 0 0;
+    .glyphicon-th{
+      padding-right: 5px;
+    }
+  }
+  .profile-icon{
+    display: inline-block;
+    .carot{
+      font-size: 12px;
+      padding-left: 2px;
+    }
+    p{
+      margin: 0 5px 0px 20px;
+      display: inline-block;
+    }
+  }
+}
