@@ -18,9 +18,7 @@ img {
 .container-fluid{
   padding: 0;
   margin-bottom: 30px;
-  -webkit-box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
-  box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
+
 }
 .bod{
   background: url("../images/background.jpg") no-repeat;
@@ -134,6 +132,7 @@ img {
     display: inline-block;
   }
   a{
+
     display: inline-block;
     text-decoration: none;
     color: white;
@@ -142,6 +141,9 @@ img {
     margin: 22px 25px 0 0;
     .glyphicon-th{
       padding-right: 5px;
+    }
+    &:hover{
+      color: rgba(208, 168, 106, 1);
     }
   }
   .profile-icon{
@@ -155,6 +157,24 @@ img {
       display: inline-block;
     }
   }
+  .user-list{
+    list-style: none;
+    position: absolute;
+    background-color: white;
+    color: black;
+    border: 1px solid lightgrey;
+    padding: 0;
+    margin: 5px 0px 0px -70px;
+    cursor: pointer;
+    right: 35px;
+    li{
+      padding: 5px 20px 5px 20px;
+      &:hover{
+        background-color: rgba(109, 26, 7, 1);
+        color: white;
+      }
+    }
+  }
 }
 
 $lines-to-show: 3;
@@ -166,6 +186,7 @@ $lines-to-show: 3;
   // padding: 0;
   img{
     width: 100%;
+    height: 320px;
   }
   h3{
     font-family: American Typewriter;
@@ -207,7 +228,157 @@ $lines-to-show: 3;
 }
 
 
-
 .recipe{
   text-align: center;
+  font-family: American Typewriter;
+  img{
+    max-width: 600px;
+    max-width: 300px;
+  }
+  h1{
+    margin-bottom: 0;
+  }
+  h2{
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: rgba(109, 26, 7, 1);
+  }
+   h3{
+     color: rgba(109, 26, 7, 1);
+   }
+   p{
+     max-width: 450px;
+     text-align: center;
+     margin: 8px auto 15px auto;
+     font-size: 20px;
+   }
+  .recipe-info{
+
+    .info-chart{
+      margin-right: -5px;
+      ul{
+          padding: 0;
+          list-style: none;
+          width: 465px;
+          margin: 0 auto;
+        li{
+          font-size: 15px;
+          text-align: left;
+          display: inline-block;
+          border: 1px solid lightgray;
+          color: darkred;
+          height: 80px;
+          width: 25%;
+          vertical-align: top;
+
+          p{
+            margin-left: 8px;
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+            color: black;
+            text-align: left;
+          }
+          span{
+            padding: 0 0 0 6px;
+            font-size: 24px;
+            color: darkred;
+          }
+        }
+      }
+    }
+    .serving-chart{
+      border-radius: 3px;
+      margin: 10px auto 45px auto;
+      border: 2px solid lightgray;
+      width: 465px;
+      h2{
+        margin: 10px auto 0 auto;
+        padding-bottom: 8px;
+        border-bottom: 1px solid lightgray;
+      }
+
+      table{
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+
+.create{
+  width: 600px;
+  margin: 0 auto;
+  h1{
+    margin-top: 0px;
+    text-align: center;
+    font-family:   American Typewriter;
+  }
+  .basic-info{
+    margin-top: 20px;
+
+    .add-img{
+      padding-top: 20px;
+      font-family:   American Typewriter;
+      vertical-align: top;
+      text-align: center;
+      color: darkred;
+      background-color: darkgray;
+      display: inline-block;
+      height:150px;
+      width: 175px;
+    }
+    form{
+      margin: 0px 0 0 10px;
+      display: inline-block;
+      width: 65%;
+      input{
+        margin-bottom: 10px;
+
+      }
+      #description{
+        height: 61px;
+        padding: 0px 0px 28px 10px;      }
+    }
+  }
+  .more-create-info{
+    margin-top: 15px;
+    #making-info{
+      select{
+        margin-right: 5px;
+      }
+      input{
+        display: inline-block;
+        width: 26%;
+        margin-left: 7px;
+      }
+    }
+    #will-make{
+      margin-top: 15px;
+      border-bottom: 1px solid lightgray;
+      padding-bottom: 20px;
+      p{
+        display: inline-block;
+        font-size: 16px;
+      }
+      input{
+        display: inline-block;
+        width: 61%;
+        margin-left: 5px;
+      }
+    }
+  }
+  button{
+    width: 100%;
+    margin: 20px auto;
+    color: white;
+    background-color: rgba(109, 26, 7, 1);
+    border: 1px solid rgba(109, 26, 7, 1);
+    &:hover{
+      color:rgba(109, 26, 7, 1);
+      background-color: rgba(109, 26, 7, 0);
+      border: 1px solid rgba(109, 26, 7, 1);
+    }
+  }
 }
