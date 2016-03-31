@@ -6044,6 +6044,20 @@ img {
     margin-top: 0px;
     text-align: center;
     font-family: American Typewriter; }
+  .create .ingredientsTitle {
+    margin-top: 10px; }
+  .create .ingredients input {
+    width: 25%;
+    display: inline-block;
+    margin-right: 12px; }
+  .create .addIngBtn {
+    width: 75%;
+    display: inline-block;
+    margin: 10px 75px 18px 75px; }
+  .create .deleteIngBtn {
+    width: 16%;
+    display: inline-block;
+    margin-left: 15px; }
   .create .basic-info {
     margin-top: 20px; }
     .create .basic-info .add-img {
@@ -6066,6 +6080,7 @@ img {
         height: 61px;
         padding: 0px 0px 28px 10px; }
   .create .more-create-info {
+    border-bottom: 1px solid lightgray;
     margin-top: 15px; }
     .create .more-create-info #making-info select {
       margin-right: 5px; }

@@ -33,7 +33,10 @@ var AppFeed = React.createClass({
   singleRecipe: function(item, e){
     e.preventDefault();
     var singleItem =  JSON.stringify(item.get('recipeInfo'));
+    var itemPhoto = JSON.stringify(item.get('recipePhotoFile'));
+    localStorage.setItem('recipePhoto', itemPhoto);
     localStorage.setItem('recipe', singleItem);
+    localStorage.setItem('wholeRecipe', JSON.stringify(item));
     Backbone.history.navigate('recipe', {trigger: true});
   },
   render: function(){
@@ -41,13 +44,12 @@ var AppFeed = React.createClass({
     if(this.state.recipeItems){
       items = this.state.recipeItems.map(function(item){
         var recipeInfo = item.get('recipeInfo');
-        var recipePhoto = item.get('recipePhotoFile');
-        // var newPhoto = JSON.parse(recipePhoto);
-        console.log(recipePhoto);
+        var recipePhoto =  JSON.stringify(item.get('recipePhotoFile'));
+        recipePhoto = JSON.parse(recipePhoto);
         return(
           <div className="col-sm-6 col-md-4" key={item.id} >
             <div className="thumbnail" onClick={this.singleRecipe.bind(this, item)}>
-              <img src={recipePhoto} alt="..." />
+              <img src={recipePhoto.url} alt="..." />
               <div className="caption">
                 <h3>{recipeInfo.name}</h3>
                 <h4>{recipeInfo.username}</h4>

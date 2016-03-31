@@ -315,6 +315,28 @@ $lines-to-show: 3;
     text-align: center;
     font-family:   American Typewriter;
   }
+  .ingredientsTitle{
+    margin-top: 10px;
+  }
+  .ingredients{
+    input{
+      width: 25%;
+      display: inline-block;
+      margin-right: 12px;
+
+    }
+  }
+  .addIngBtn{
+    width: 75%;
+    display: inline-block;
+    margin: 10px 75px 18px 75px;
+  }
+  .deleteIngBtn{
+    width: 16%;
+    display: inline-block;
+    margin-left: 15px;
+  }
+
   .basic-info{
     margin-top: 20px;
 
@@ -343,6 +365,7 @@ $lines-to-show: 3;
     }
   }
   .more-create-info{
+    border-bottom: 1px solid lightgray;
     margin-top: 15px;
     #making-info{
       select{

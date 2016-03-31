@@ -35,7 +35,10 @@ var AppFeed = React.createClass({displayName: "AppFeed",
   singleRecipe: function(item, e){
     e.preventDefault();
     var singleItem =  JSON.stringify(item.get('recipeInfo'));
+    var itemPhoto = JSON.stringify(item.get('recipePhotoFile'));
+    localStorage.setItem('recipePhoto', itemPhoto);
     localStorage.setItem('recipe', singleItem);
+    localStorage.setItem('wholeRecipe', JSON.stringify(item));
     Backbone.history.navigate('recipe', {trigger: true});
   },
   render: function(){
@@ -43,13 +46,12 @@ var AppFeed = React.createClass({displayName: "AppFeed",
     if(this.state.recipeItems){
       items = this.state.recipeItems.map(function(item){
         var recipeInfo = item.get('recipeInfo');
-        var recipePhoto = item.get('recipePhotoFile');
-        // var newPhoto = JSON.parse(recipePhoto);
-        console.log(recipePhoto);
+        var recipePhoto =  JSON.stringify(item.get('recipePhotoFile'));
+        recipePhoto = JSON.parse(recipePhoto);
         return(
           React.createElement("div", {className: "col-sm-6 col-md-4", key: item.id}, 
             React.createElement("div", {className: "thumbnail", onClick: this.singleRecipe.bind(this, item)}, 
-              React.createElement("img", {src: recipePhoto, alt: "..."}), 
+              React.createElement("img", {src: recipePhoto.url, alt: "..."}), 
               React.createElement("div", {className: "caption"}, 
                 React.createElement("h3", null, recipeInfo.name), 
                 React.createElement("h4", null, recipeInfo.username), 
@@ -133,11 +135,39 @@ var Parse = require('parse');
 Parse.initialize("gabeserver");
 Parse.serverURL = 'http://gabes-non-tiny-server.herokuapp.com/';
 var RecipeClass = Parse.Object.extend("NewRecipes");
+var IngredientClass = Parse.Object.extend('Ingredients');
 
+
+var IngredientsList = React.createClass({displayName: "IngredientsList",
+  render: function(){
+    return(
+      React.createElement("form", {className: "ingredients"}, 
+        React.createElement("input", {type: "text", ref: "qty" + this.props.count, name: "qty" + this.props.count, className: "form-control", placeholder: "2"}), 
+        React.createElement("input", {type: "text", ref: "unit" + this.props.count, name: "unit" + this.props.count, className: "form-control", placeholder: "cups"}), 
+        React.createElement("input", {type: "text", ref: "item" + this.props.count, name: "item" + this.props.count, className: "form-control", placeholder: "flour"}), 
+        React.createElement("button", {type: "button", className: "btn btn-default deleteIngBtn", onClick: this.props.delete}, "- Delete")
+      )
+    );
+  }
+});
 
 var CreateRecipe = React.createClass({displayName: "CreateRecipe",
+  getInitialState: function(){
+    return{ingredientCount: 1};
+  },
+  deleteIngRow: function(e){
+    e.preventDefault();
+    var newCount = this.state.ingredientCount - 1;
+    this.setState({"ingredientCount": newCount});
+  },
+  addRow: function(e){
+    e.preventDefault();
+    var newCount = this.state.ingredientCount + 1;
+    this.setState({"ingredientCount": newCount});
+  },
   letHellBrakeLose: function (e){
     e.preventDefault();
+    var self = this;
     var image = $('#callForFile')[0];
     if (image.files.length > 0) {
       var file = image.files[0];
@@ -164,7 +194,6 @@ var CreateRecipe = React.createClass({displayName: "CreateRecipe",
       'name': name,
       'username': username,
       'description': description,
-      "imageUrl": imageUrl,
       'type':type,
       'prepTime':prepTime,
       'cookTime': cookTime,
@@ -176,6 +205,28 @@ var CreateRecipe = React.createClass({displayName: "CreateRecipe",
     recipe.set('recipePhotoFile', parseFile);
     recipe.save(null,{
       success:function(recipe) {
+        var recipeIngredients = [];
+        for(var i=1; i <= self.state.ingredientCount; i++){
+          var qty = self.refs["formset"+i].refs["qty" + i].value;
+          var unit = self.refs["formset"+i].refs["unit" + i].value;
+          var item = self.refs["formset"+i].refs["item" + i].value;
+          var ingredient = new IngredientClass();
+          ingredient.set('qty', parseInt(qty));
+          ingredient.set('unit', unit);
+          ingredient.set('item', item);
+          ingredient.set('recipe', recipe);
+
+          recipeIngredients.push(ingredient);
+        }
+        // save all ingredients
+        Parse.Object.saveAll(recipeIngredients, {
+          success: function(list) {
+            alert('saved: ', list);
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
         Backbone.history.navigate('home', {trigger: true});
       },
       error:function(error) {
@@ -184,6 +235,11 @@ var CreateRecipe = React.createClass({displayName: "CreateRecipe",
     });
   },
   render: function(){
+    var ingredientFormSet = [];
+    for(var i=1; i<= this.state.ingredientCount; i++){
+      var count = i;
+      ingredientFormSet.push(React.createElement(IngredientsList, {key: count, count: count, delete: this.deleteIngRow, ref: "formset"+count}));
+    }
     return(
       React.createElement("div", {className: "create"}, 
         React.createElement("h1", null, "Create A Recipe"), 
@@ -218,13 +274,19 @@ var CreateRecipe = React.createClass({displayName: "CreateRecipe",
               React.createElement("option", {value: ""}, "16")
             ), 
             React.createElement("input", {type: "text", className: "form-control", id: "items", placeholder: "cookies, loaves, ect", required: ""})
-          )
+          ), 
+          React.createElement("h1", {className: "ingredientsTitle"}, "Indgredients"), 
+          ingredientFormSet, 
+          React.createElement("button", {type: "button", className: "btn btn-default addIngBtn", onClick: this.addRow}, "+ Add Indgredient")
         ), 
-        React.createElement("button", {type: "button", className: "btn btn-default", onClick: this.letHellBrakeLose}, "Create Recipe")
+        React.createElement("button", {type: "button", className: "btn btn-default lastBtn", onClick: this.letHellBrakeLose}, "Create Recipe")
       )
     );
   }
 });
+
+
+
 
 
 module.exports= CreateRecipe;
@@ -339,14 +401,81 @@ Parse.initialize("gabeserver");
 Parse.serverURL = 'http://gabes-non-tiny-server.herokuapp.com/';
 
 var SingleRecipe = React.createClass({displayName: "SingleRecipe",
+  getInitialState: function(){
+    return{
+      ingredients: null,
+    };
+  },
+  componentWillMount: function(){
+    //get recipeObj data from localStorage
+    var id = localStorage.getItem('wholeRecipe');
+
+    //set JSON object from raw string data
+    id = JSON.parse(id);
+
+    //build constructor for Parse Recipe Objecy
+    var Recipe = Parse.Object.extend("NewRecipes");
+
+    //instantiates a Parse Recipe Object with JSON data from localStorage
+    var recipe = new Recipe(id);
+
+    //instantiate a new query on the Ingredients table
+    var query = new Parse.Query( Parse.Object.extend("Ingredients") );
+
+    //set query search for ingretients that belong to this recipe
+    query.equalTo("recipe", recipe);
+
+    //do the query and return the ingredients
+    query.find().then(function(ingredients){
+
+      this.setState({"ingredients": ingredients});
+      console.log("Ingredients: ",ingredients);
+
+    }.bind(this),
+
+    function(error){
+      console.log('error getting ingredients', error);
+    });
+
+
+
+
+    //
+    // var NewRecipes = Parse.Object.extend("NewRecipes");
+    // var queryRecipe = new Parse.Query(NewRecipes);
+    // queryRecipe.get(id.objectId).then(function(recipe){
+    //   var Ingredients = Parse.Object.extend("Ingredients");
+    //   var query = new Parse.Query(Ingredients);
+    //   query.equalTo("recipe", recipe);
+    //   query.find().then(function(ingredients){
+    //     console.log(ingredients);
+    //   })
+    // });
+
+  },
+  // componentWillUnmount: function(){
+  //   this.setState({'ingredients': null});
+  //   console.log(this.state.ingredients);
+  // },
   render: function(){
-    var recipe =JSON.parse(localStorage.getItem('recipe'));
-    console.log(recipe);
+    var recipe = JSON.parse(localStorage.getItem('recipe'));
+    var recipePhoto = JSON.parse(localStorage.getItem('recipePhoto'));
+    if(this.state.ingredients){
+      var list = this.state.ingredients.map(function(ingredient){
+        var ing = ingredient.attributes;
+        return(
+          React.createElement("tr", {key: ingredient.id}, 
+            React.createElement("td", null, ing.qty, " ", ing.unit), 
+            React.createElement("td", null, ing.item)
+          )
+        );
+      });
+    }
     return(
       React.createElement("div", {className: "recipe"}, 
         React.createElement("h1", null, recipe.name), 
         React.createElement("h2", null, "by: ", recipe.username), 
-        React.createElement("img", {src: "images/brownie.jpg", alt: "..."}), 
+        React.createElement("img", {src: recipePhoto.url, alt: "..."}), 
         React.createElement("h3", null, "- Description -"), 
         React.createElement("p", null, recipe.description), 
         React.createElement("div", {className: "recipe-info"}, 
@@ -374,26 +503,7 @@ var SingleRecipe = React.createClass({displayName: "SingleRecipe",
             React.createElement("h2", null, recipe.amount, " ", recipe.items), 
             React.createElement("table", {className: "table table-bordered"}, 
               React.createElement("tbody", null, 
-                 React.createElement("tr", null, 
-                   React.createElement("td", null, "2"), 
-                   React.createElement("td", null, "Eggs")
-                 ), 
-                 React.createElement("tr", null, 
-                   React.createElement("td", null, "1-1/2 lbs"), 
-                   React.createElement("td", null, "Raw Squid")
-                 ), 
-                 React.createElement("tr", null, 
-                   React.createElement("td", null, "2"), 
-                   React.createElement("td", null, "Hushpuppies")
-                 ), 
-                 React.createElement("tr", null, 
-                   React.createElement("td", null, "1"), 
-                   React.createElement("td", null, "Lemon")
-                 ), 
-                 React.createElement("tr", null, 
-                   React.createElement("td", null, "1/2 lb"), 
-                   React.createElement("td", null, "Walnuts")
-                 )
+                 list
               )
             )
           )
